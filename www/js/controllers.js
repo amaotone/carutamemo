@@ -61,13 +61,13 @@ angular.module("memo")
 .controller("AppCtrl", AppCtrl)
 .controller("RecordsCtrl", RecordsCtrl)
 
-function RecordsCtrl(DB) {
+function RecordsCtrl(DB, recordsService) {
   var vm = this;
-  DB.query("INSERT INTO testdb(content) VALUES('this is test')");
   DB.query("SELECT * FROM testdb")
   .then(function(result) {
     vm.test = DB.fetchAll(result);
   });
+  recordsService.addEvent("多摩大会", 1, "20150918", "多摩", 1, 1);
 }
 function AppCtrl($scope, $ionicModal, $timeout) {
 
