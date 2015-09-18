@@ -29,8 +29,8 @@ angular.module("memo")
       columns: [
         {name: "id", type: "integer primary key AUTOINCREMENT"},
         {name: "opponent", type: "text default null"},
-        {name: "result", type: "integer not null"},
-        {name: "number", type: "integer not null"},
+        {name: "result", type: "integer not null"}, // 0:負け 1:勝ち
+        {name: "number", type: "integer not null"}, // -50 ~ 50
         {name: "comment", type: "text default null"},
         {name: "event_key", type: "integer not null"}
       ]

@@ -3,11 +3,11 @@
   angular.module("memo")
   .factory("recordsService", recordsService);
 
-  function recordsService(DB) {
+  function recordsService($q, DB) {
     var service = {
       addEvent: addEvent,
       addGame: addGame,
-      fetchRecords: fetchRecords
+      fetchAllRecords: fetchAllRecords
     };
     return service;
 
@@ -22,11 +22,21 @@
       " VALUES(?,?,?,?,?,?)",args)
       .then(console.log("insert into events"));
     }
-    function addGame() {
-
+    function addGame(opponent, result, number, comment, event_key) {
+      var args = [opponent, result, number, comment, event_key];
+      DB.query("INSERT INTO games(opponent, result, number, comment, event_key)"+
+      " VALUES(?,?,?,?,?)", args)
+      .then(console.log("insert into games"));
     }
-    function fetchRecords() {
+    function fetchAllRecords() {
+      var records = $q.defer();
 
+      // event -> 対応するgame の順に取得
+      DB.query("SELECT * FROM events")
+      .then(function(result){
+        records.resolve(DB.fetchAll(result));
+      })
+      return records.promise;
     }
   }
 })();

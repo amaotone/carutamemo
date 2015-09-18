@@ -63,11 +63,15 @@ angular.module("memo")
 
 function RecordsCtrl(DB, recordsService) {
   var vm = this;
-  DB.query("SELECT * FROM testdb")
+  recordsService.fetchAllRecords()
   .then(function(result) {
-    vm.test = DB.fetchAll(result);
+    vm.test = result;
   });
-  recordsService.addEvent("多摩大会", 1, "20150918", "多摩", 1, 1);
+  // DB.query("SELECT * FROM testdb")
+  // .then(function(result) {
+  //   vm.test = DB.fetchAll(result);
+  // });
+  // recordsService.addEvent("多摩大会", 1, "20150918", "多摩", 1, 1);
 }
 function AppCtrl($scope, $ionicModal, $timeout) {
 
