@@ -7,6 +7,8 @@
     var service = {
       addEvent: addEvent,
       addGame: addGame,
+      fetchAllGames: fetchAllGames,
+      fetchAllEvents: fetchAllEvents,
       fetchAllRecords: fetchAllRecords
     };
     return service;
@@ -22,20 +24,67 @@
       " VALUES(?,?,?,?,?,?)",args)
       .then(console.log("insert into events"));
     }
+
     function addGame(opponent, result, number, comment, event_key) {
       var args = [opponent, result, number, comment, event_key];
       DB.query("INSERT INTO games(opponent, result, number, comment, event_key)"+
       " VALUES(?,?,?,?,?)", args)
       .then(console.log("insert into games"));
     }
-    function fetchAllRecords() {
-      var records = $q.defer();
 
-      // event -> 対応するgame の順に取得
-      DB.query("SELECT * FROM events")
-      .then(function(result){
-        records.resolve(DB.fetchAll(result));
-      })
+    function fetchAllEvents() {
+      var events = $q.defer();
+      DB.query("SELECT id, name, date FROM events")
+      .then(
+        function(result){
+          events.resolve(DB.fetchAll(result));
+          console.log("fetch all events");
+        }, function(error) {
+          console.log("大会データを種得できませんでした");
+        }
+      );
+      return events.promise;
+    }
+
+    function fetchAllGames() {
+      var games = $q.defer();
+      DB.query("SELECT * FROM games")
+      .then(
+        function(result) {
+          games.resolve(DB.fetchAll(result));
+          console.log("fetch all games");
+        }, function(error) {
+          console.log("試合データを取得できませんでした");
+        }
+      );
+      return games.promise;
+    }
+
+    function fetchGamesByKey(event_key) {
+      var games = $q.defer();
+      DB.query("SELECT * FROM games WHERE event_key = ? ;", [event_key])
+      .then(
+        function(result) {
+          games.resolve(DB.fetchAll(result));
+        }, function(error) {
+          console.log("試合データを取得できませんでした");
+        }
+      );
+      return games.promise;
+    }
+
+    function fetchAllRecords() {
+      // var records = [];
+      // var records = $q.defer();
+      var records = $q.defer();
+      var events = fetchAllEvents();
+      var games = fetchAllGames();
+      $q.all([events,games])
+      .then(function() {
+        angular.forEach(events, function(event, i) {
+        })
+        records.resolve(games);
+      });
       return records.promise;
     }
   }

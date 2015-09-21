@@ -1,5 +1,16 @@
 <ion-view view-title="かるためも">
   <ion-content>
-    {{ main.test }}
+    <ul class="list">
+      <div ng-repeat="event in main.events">
+        <div class="item item-divider">{{event.date}} {{event.name}}</div>
+        <div ng-repeat="game in main.games | filter: {event_key: event.id}: true">
+          <li class="item">{{game.opponent}} {{game.number}}</li>
+        </div>
+      </div>
+    </ul>
+    <pre>
+      {{ main.test }}
+    </pre>
+
   </ion-content>
 </ion-view>
