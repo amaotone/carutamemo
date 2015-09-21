@@ -1,6 +1,14 @@
 (function(){
   angular.module("memo")
-  .config(States);
+  .config(States)
+  .config(LocalStorage);
+
+  function LocalStorage(localStorageServiceProvider) {
+    localStorageServiceProvider
+    .setPrefix('memo')
+    .setStorageType('localStorage')
+    .setNotify(true, true);
+  }
 
   function States($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -18,7 +26,16 @@
           controller: 'RecordsCtrl as main'
         }
       }
+    })
+    .state("app.config", {
+      url: "/config",
+      views: {
+        "menuContent": {
+          templateUrl: "templates/config.html",
+          controller: "ConfigCtrl as main"
+        }
+      }
     });
-    $urlRouterProvider.otherwise('/app/records');
+    $urlRouterProvider.otherwise('app/records');
   }
 })();

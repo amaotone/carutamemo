@@ -1,7 +1,31 @@
 (function() {
   "use strict";
   angular.module("memo")
-  .factory("recordsService", recordsService);
+  .factory("recordsService", recordsService)
+  .factory("configService", configService);
+
+  function configService(localStorageService) {
+    var myClass = fetchMyClass();
+    var service = {
+      myClass: myClass,
+      fetchMyClass: fetchMyClass,
+      saveMyClass: saveMyClass
+    };
+    return service;
+
+    function fetchMyClass() {
+      var _myClass = localStorageService.get("myClass");
+      if (_myClass === null) {
+        localStorageService.set("myClass","F");
+        _myClass = "F";
+      }
+      return _myClass;
+    }
+
+    function saveMyClass(val) {
+      localStorageService.set("myClass", val);
+    }
+  }
 
   function recordsService($q, DB) {
     var service = {
@@ -74,8 +98,6 @@
     }
 
     function fetchAllRecords() {
-      // var records = [];
-      // var records = $q.defer();
       var records = $q.defer();
       var events = fetchAllEvents();
       var games = fetchAllGames();

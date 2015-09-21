@@ -1,16 +1,15 @@
 <ion-view view-title="かるためも">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon icon ion-compose"></button>
+  </ion-nav-buttons>
   <ion-content>
     <ul class="list">
-      <div ng-repeat="event in main.events">
+      <div ng-repeat="event in main.events | orderBy:event.date">
         <div class="item item-divider">{{event.date}} {{event.name}}</div>
-        <div ng-repeat="game in main.games | filter: {event_key: event.id}: true">
+        <div ng-repeat="game in main.games | filter:{event_key:event.id}:true">
           <li class="item">{{game.opponent}} {{game.number}}</li>
         </div>
       </div>
     </ul>
-    <pre>
-      {{ main.test }}
-    </pre>
-
   </ion-content>
 </ion-view>

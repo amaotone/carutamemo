@@ -2,13 +2,22 @@
 angular.module("memo")
 .controller("AppCtrl", AppCtrl)
 .controller("RecordsCtrl", RecordsCtrl)
+.controller("ConfigCtrl", ConfigCtrl);
 
-function RecordsCtrl(DB, recordsService) {
+function ConfigCtrl($scope, configService) {
   var vm = this;
-  // recordsService.fetchAllRecords()
-  // .then(function(result){
-  //   vm.test = result;
-  // });
+  vm.classes = ["A","B","C","D","E","F"];
+  vm.class = configService.fetchMyClass();
+  $scope.$watch(
+    "main.class",
+    function(newval,oldval) {
+      configService.saveMyClass(newval);
+    }
+  );
+}
+
+function RecordsCtrl(recordsService) {
+  var vm = this;
   recordsService.fetchAllEvents()
   .then(function(result) {
     vm.events = result;
@@ -17,11 +26,7 @@ function RecordsCtrl(DB, recordsService) {
   .then(function(result) {
     vm.games = result;
   });
-  // DB.query("SELECT * FROM testdb")
-  // .then(function(result) {
-  //   vm.test = DB.fetchAll(result);
-  // });
-  // recordsService.addEvent("多摩大会", 1, "20150918", "多摩", 1, 1);
+
 }
 function AppCtrl($scope, $ionicModal, $timeout) {
 

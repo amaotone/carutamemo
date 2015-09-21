@@ -1,0 +1,25 @@
+<ion-view view-title="設定">
+  <ion-content padding="true">
+    <div class="card list">
+      <div class="item item-divider">
+        個人設定
+      </div>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          現在の級
+        </div>
+        <select ng-model="main.class" ng-options="class for class in main.classes">
+        </select>
+      </label>
+    </div>
+    <div class="card list">
+      <div class="item item-divider">
+        アプリ情報
+      </div>
+      <div class="item">
+        かるためも
+        <i class="item-note">version:0.0.1</i>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

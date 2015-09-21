@@ -5,10 +5,11 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('memo', [
-  'ionic'
+  'ionic',
+  "LocalStorageModule"
 ])
 
-.run(function($ionicPlatform, DB) {
+.run(function($ionicPlatform, DB, configService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,5 +22,6 @@ angular.module('memo', [
       StatusBar.styleDefault();
     }
     DB.init();
+    configService.fetchMyClass();
   });
 });
